@@ -37,6 +37,8 @@ elif [[ "$ID" == "ubuntu" ]];then
     DISTRO="ubuntu"
 elif [[ -e /etc/fedora-release ]]; then
     DISTRO="fedora"
+elif [[ -e /etc/arch-release ]]; then
+    DISTRO="arch"
 else
     echo "Your distribution is not supported (yet)"
     exit
@@ -107,7 +109,10 @@ if [ ! -f "$WG_CONFIG" ]; then
         yum install wireguard-dkms qrencode wireguard-tools -y
     elif [ "$DISTRO" == "fedora" ]; then
         sudo dnf copr enable jdoss/wireguard
-        sudo dnf install wireguard-dkms wireguard-tools
+        sudo dnf install wireguard-dkms wireguard-tool qrencode iptables-persistent -y
+    elif [ "$DISTRO" == "arch" ]; then
+        sudo pacman -S linux-headers                
+        sudo pacman -S wireguard-tools qrencode iptables-persistent -y
     fi
 
     SERVER_PRIVKEY=$( wg genkey )
