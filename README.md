@@ -15,12 +15,16 @@ WireGuard® is an extremely simple yet fast and modern VPN that utilizes state-o
 
  Simple & Easy-to-use
 WireGuard aims to be as easy to configure and deploy as SSH. A VPN connection is made simply by exchanging very simple public keys – exactly like exchanging SSH keys – and all the rest is transparently handled by WireGuard. It is even capable of roaming between IP addresses, just like Mosh. There is no need to manage connections, be concerned about state, manage daemons, or worry about what's under the hood. WireGuard presents an extremely basic yet powerful interface.
+
  Cryptographically Sound
 WireGuard uses state-of-the-art cryptography, like the Noise protocol framework, Curve25519, ChaCha20, Poly1305, BLAKE2, SipHash24, HKDF, and secure trusted constructions. It makes conservative and reasonable choices and has been reviewed by cryptographers.
+
  Minimal Attack Surface
 WireGuard has been designed with ease-of-implementation and simplicity in mind. It is meant to be easily implemented in very few lines of code, and easily auditable for security vulnerabilities. Compared to behemoths like *Swan/IPsec or OpenVPN/OpenSSL, in which auditing the gigantic codebases is an overwhelming task even for large teams of security experts, WireGuard is meant to be comprehensively reviewable by single individuals.
+
  High Performance
 A combination of extremely high-speed cryptographic primitives and the fact that WireGuard lives inside the Linux kernel means that secure networking can be very high-speed. It is suitable for both small embedded devices like smartphones and fully loaded backbone routers.
+
  Well Defined & Thoroughly Considered
 WireGuard is the result of a lengthy and thoroughly considered academic process, resulting in the technical whitepaper, an academic research paper which clearly defines the protocol and the intense considerations that went into each decision.
 
