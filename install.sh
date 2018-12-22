@@ -29,12 +29,14 @@ if [[ ! -e /dev/net/tun ]]; then
 fi
 
 
-if [ $id == CentOS ]; then
+if [ -e /etc/centos-release ]; then
     DISTRO="CentOS"
-elif [ $id == debian ]; then
-    DISTRO=$( lsb_release -is )
-elif [ $id == Ubuntu ]; then
-    DISTRO="Ubuntu"
+elif [ -e /etc/debian_version ]; then
+    DISTRO="debian"
+elif [[ "$ID" == "ubuntu" ]];then
+    DISTRO="ubuntu"
+elif [[ -e /etc/fedora-release ]]; then
+    DISTRO="fedora"
 else
     echo "Your distribution is not supported (yet)"
     exit
@@ -103,6 +105,9 @@ if [ ! -f "$WG_CONFIG" ]; then
         curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo
         yum install epel-release -y
         yum install wireguard-dkms qrencode wireguard-tools -y
+    elif [ "$DISTRO" == "fedora" ]; then
+        sudo dnf copr enable jdoss/wireguard
+        sudo dnf install wireguard-dkms wireguard-tools
     fi
 
     SERVER_PRIVKEY=$( wg genkey )
