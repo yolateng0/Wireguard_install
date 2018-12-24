@@ -101,8 +101,8 @@ if [ ! -f "$WG_CONFIG" ]; then
 				RESOLVCONF='/etc/resolv.conf'
 			fi
 			# Obtain the resolvers from resolv.conf and use them for Wireguard VPN
-			    grep -v '#' $RESOLVCONF | grep 'nameserver' | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | while read -r line; do
-				echo "push \"CLIENT_DNS=$(line\"" >> /etc/wireguard/wg0.conf
+			grep -v '#' $RESOLVCONF | grep 'nameserver' | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | while read -r line; do
+			echo "push \"CLIENT_DNS=$(line\"" >> /etc/wireguard/wg0.conf
 			done
             ;;
         esac
