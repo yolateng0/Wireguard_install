@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# https://github.com/l-n-s/wireguard-install
+# # Secure OpenVPN server installer for Debian, Ubuntu, CentOS, Fedora and Arch Linux
+# https://github.com/yolateng0/Wireguard_install/
 #
 # Copyright (c) 2018 Viktor Villainov. Released under the MIT License.
 # Copyright (c) 2018 yolateng0. Released under the MIT License.
