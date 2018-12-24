@@ -17,18 +17,18 @@ function get_free_udp_port
         get_free_udp_port
     fi
 }
-
+#root access
 if [[ "$EUID" -ne 0 ]]; then
     echo "Sorry, you need to run this as root"
     exit
 fi
-
+#is tun device available
 if [[ ! -e /dev/net/tun ]]; then
     echo "The TUN device is not available. You need to enable TUN before running this script"
     exit
 fi
 
-
+#OS check
 if [ -e /etc/centos-release ]; then
     DISTRO="CentOS"
 elif [ -e /etc/debian_version ]; then
@@ -174,7 +174,7 @@ qrencode -t ansiutf8 -l L < $HOME/client-wg0.conf
     echo "Client config --> $HOME/client-wg0.conf"
     echo "Now reboot the server and enjoy your fresh VPN installation! :^)"
 else
-    ### Server is installed, add a new client
+    ### Server is installed, creat add a new client
     CLIENT_NAME="$1"
     if [ "$CLIENT_NAME" == "" ]; then
         echo "Tell me a name for the client config file. Use one word only, no special characters."
