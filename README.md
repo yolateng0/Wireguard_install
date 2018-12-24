@@ -34,4 +34,6 @@ WireGuard is the result of a lengthy and thoroughly considered academic process,
 
 
 # Sources
+https://wireguard.org
 https://github.com/l-n-s/wireguard-install
+https://github.com/angristan/openvpn-install/blob/master/openvpn-install.sh
