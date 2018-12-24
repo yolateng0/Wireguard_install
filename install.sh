@@ -69,11 +69,12 @@ if [ ! -f "$WG_CONFIG" ]; then
     if [ "$CLIENT_DNS" == "" ]; then
         echo "Which DNS do you want to use with the VPN?"
         echo "   1) Cloudflare"
-        echo "   2) FDNdns"
+        echo "   2) FDNdns (France)"
         echo "   3) OpenDNS" 
         echo "   4) AdGuard DNS"
         echo "   5) DNS.WATCH"   
-        read -p "DNS [1-5]: " -e -i 2 DNS_CHOICE
+        echo "   6) Current system resolvers (from /etc/resolv.conf)"
+        read -p "DNS [1-6]: " -e -i 2 DNS_CHOICE
 
         case $DNS_CHOICE in
             1)
@@ -90,6 +91,19 @@ if [ ! -f "$WG_CONFIG" ]; then
             ;;
             5)
             CLIENT_DNS="84.200.69.80,84.200.70.40"
+            ;;
+            6)
+            # Locate the proper resolv.conf
+			# Needed for systems running systemd-resolved
+			if grep -q "127.0.0.53" "/etc/resolv.conf"; then
+				RESOLVCONF='/run/systemd/resolve/resolv.conf'
+			else
+				RESOLVCONF='/etc/resolv.conf'
+			fi
+			# Obtain the resolvers from resolv.conf and use them for Wireguard VPN
+			    grep -v '#' $RESOLVCONF | grep 'nameserver' | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | while read -r line; do
+				echo "push \"CLIENT_DNS=$(line\"" >> /etc/wireguard/wg0.conf
+			done
             ;;
         esac
     fi
