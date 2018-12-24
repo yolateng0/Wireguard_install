@@ -74,7 +74,8 @@ if [ ! -f "$WG_CONFIG" ]; then
         echo "   4) AdGuard DNS"
         echo "   5) DNS.WATCH"   
         echo "   6) Current system resolvers (from /etc/resolv.conf)"
-        read -p "DNS [1-6]: " -e -i 2 DNS_CHOICE
+	echo "   7) Quad9 uncensored (Anycast: worldwide)"
+        read -p "DNS [1-7]: " -e -i 2 DNS_CHOICE
 
         case $DNS_CHOICE in
             1)
@@ -104,6 +105,9 @@ if [ ! -f "$WG_CONFIG" ]; then
 			grep -v '#' $RESOLVCONF | grep 'nameserver' | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | while read -r line; do
 			echo "push \"CLIENT_DNS=$(line\"" >> /etc/wireguard/wg0.conf
 			done
+            ;;
+	    7)
+            CLIENT_DNS="176.103.130.130,176.103.130.131"
             ;;
         esac
     fi
