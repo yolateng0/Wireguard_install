@@ -1,5 +1,5 @@
 # Wireguard_install
-Install Wireguard VPN 
+Install Wireguard VPN + Locate the proper resolv.conf from /etc/resolv.conf
 
 # Usage
 

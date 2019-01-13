@@ -18,18 +18,18 @@ function get_free_udp_port
         get_free_udp_port
     fi
 }
-
+#root access
 if [[ "$EUID" -ne 0 ]]; then
     echo "Sorry, you need to run this as root"
     exit
 fi
-
+#is tun device available
 if [[ ! -e /dev/net/tun ]]; then
     echo "The TUN device is not available. You need to enable TUN before running this script"
     exit
 fi
 
-
+#OS check
 if [ -e /etc/centos-release ]; then
     DISTRO="CentOS"
 elif [ -e /etc/debian_version ]; then
@@ -70,11 +70,13 @@ if [ ! -f "$WG_CONFIG" ]; then
     if [ "$CLIENT_DNS" == "" ]; then
         echo "Which DNS do you want to use with the VPN?"
         echo "   1) Cloudflare"
-        echo "   2) FDNdns"
+        echo "   2) FDNdns (France)"
         echo "   3) OpenDNS" 
         echo "   4) AdGuard DNS"
         echo "   5) DNS.WATCH"   
-        read -p "DNS [1-5]: " -e -i 2 DNS_CHOICE
+        echo "   6) Current system resolvers (from /etc/resolv.conf)"
+	echo "   7) Quad9 uncensored (Anycast: worldwide)"
+        read -p "DNS [1-7]: " -e -i 2 DNS_CHOICE
 
         case $DNS_CHOICE in
             1)
@@ -91,6 +93,22 @@ if [ ! -f "$WG_CONFIG" ]; then
             ;;
             5)
             CLIENT_DNS="84.200.69.80,84.200.70.40"
+            ;;
+            6)
+            # Locate the proper resolv.conf
+			# Needed for systems running systemd-resolved
+			if grep -q "127.0.0.53" "/etc/resolv.conf"; then
+				RESOLVCONF='/run/systemd/resolve/resolv.conf'
+			else
+				RESOLVCONF='/etc/resolv.conf'
+			fi
+			# Obtain the resolvers from resolv.conf and use them for Wireguard VPN
+			grep -v '#' $RESOLVCONF | grep 'nameserver' | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | while read -r line; do
+			echo "push \"CLIENT_DNS=$(line\"" >> /etc/wireguard/wg0.conf
+			done
+            ;;
+	    7)
+            CLIENT_DNS="176.103.130.130,176.103.130.131"
             ;;
         esac
     fi
@@ -175,7 +193,7 @@ qrencode -t ansiutf8 -l L < $HOME/client-wg0.conf
     echo "Client config --> $HOME/client-wg0.conf"
     echo "Now reboot the server and enjoy your fresh VPN installation! :^)"
 else
-    ### Server is installed, add a new client
+    ### Server is installed, creat add a new client
     CLIENT_NAME="$1"
     if [ "$CLIENT_NAME" == "" ]; then
         echo "Tell me a name for the client config file. Use one word only, no special characters."
