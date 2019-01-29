@@ -35,7 +35,7 @@ WireGuard is the result of a lengthy and thoroughly considered academic process,
 
 # Sources
 
-https://wireguard.org
+https://wireguard.com
 
 https://github.com/l-n-s/wireguard-install
 
