@@ -103,7 +103,7 @@ if [ ! -f "$WG_CONFIG" ]; then
            
 	 
     fi
-
+# TODO: unattended updates, apt install dnsmasq ntp
     if [ "$DISTRO" == "Ubuntu" ]; then
         add-apt-repository ppa:wireguard/wireguard -y
         apt update
@@ -112,17 +112,17 @@ if [ ! -f "$WG_CONFIG" ]; then
         echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.list.d/unstable.list
         printf 'Package: *\nPin: release a=unstable\nPin-Priority: 90\n' > /etc/apt/preferences.d/limit-unstable
         apt update
-        apt install wireguard qrencode iptables-persistent -y
+        apt install wireguard qrencode iptables-persistentdnsmasq ntp -y
     elif [ "$DISTRO" == "CentOS" ]; then
         curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo
         yum install epel-release -y
-        yum install wireguard-dkms qrencode wireguard-tools -y
+        yum install wireguard-dkms qrencode wireguard-tools dnsmasq ntp -y
     elif [ "$DISTRO" == "fedora" ]; then
         sudo dnf copr enable jdoss/wireguard
-        sudo dnf install wireguard-dkms wireguard-tool qrencode iptables-persistent -y
+        sudo dnf install wireguard-dkms wireguard-tool qrencode iptables-persistent dnsmasq ntp -y
     elif [ "$DISTRO" == "arch" ]; then
         sudo pacman -S linux-headers                
-        sudo pacman -S wireguard-tools qrencode iptables-persistent -y
+        sudo pacman -S wireguard-tools qrencode iptables-persistent dnsmasq ntp -y
     fi
 
     SERVER_PRIVKEY=$( wg genkey )
@@ -180,7 +180,7 @@ qrencode -t ansiutf8 -l L < $HOME/client-wg0.conf
     systemctl enable wg-quick@wg0.service
     systemctl start wg-quick@wg0.service
 
-    # TODO: unattended updates, apt install dnsmasq ntp
+    
     echo "Client config --> $HOME/client-wg0.conf"
     echo "Now reboot the server and enjoy your fresh VPN installation! :^)"
 else
