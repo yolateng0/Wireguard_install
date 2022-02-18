@@ -1,3 +1,19 @@
+#!!!!!!!!!!!!!!!no more updates!!!!!!!!!!!!!!!!!!!!!!!!!!#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Wireguard_install
 Install Wireguard VPN + Locate the proper resolv.conf from /etc/resolv.conf
 
